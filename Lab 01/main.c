@@ -2,6 +2,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <stdlib.h> 
 
 
 
@@ -62,6 +63,7 @@ int main()
             // excuted by child
             char* command[] = {user_input,NULL};
             execve(ADDRESS,command,NULL);
+            exit(0);
             
         }
         else{
