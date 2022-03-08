@@ -7,7 +7,6 @@
 
 
 #define MAX 50
-#define ADDRESS "/bin"
 
 int main()
 {
@@ -61,17 +60,18 @@ int main()
         if (PorC == 0)
         {
             // excuted by child
+            char address[60];
+            strcpy(address,"/bin/");
+            strcat(address,user_input);
             char* command[] = {user_input,NULL};
-            execve(ADDRESS,command,NULL);
+            execve(address,command,NULL);
             exit(0);
             
         }
         else{
             // excuted by parent 
-            char* command[] = {user_input,NULL};
-            execve(ADDRESS,command,NULL);
-            int status;
-            wait(&status);
+            int* status;
+            wait(status);
         }
 
         }
