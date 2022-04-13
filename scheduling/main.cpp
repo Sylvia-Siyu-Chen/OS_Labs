@@ -3,14 +3,14 @@
 #include <iostream>
 # include <string> 
 # include <vector>
-
+# include <iomanip>
 
 
 using namespace std;
 
 int main(){
 
-    Scheduling s1 (3,1,2);
+    Scheduling s1 (1,1,2);
 
     std::vector<std::vector<std::string> > result = s1.FIFO();
 
@@ -28,22 +28,22 @@ int main(){
         
     }
     
-    int cycle = 1;
+    int cycle = 0;
     for (int j = 0; j < max; j++)
     {
-        cout<<cycle<<"      ";
-        cycle++;
+        cycle++;  
+        cout<<cycle;
         for (int i = 1; i < result.size(); i++){           
             try{
-                cout<<result.at(i).at(j)<<"     ";      
+                cout<<setw(18-(std::to_string(cycle).length()))<<result.at(i).at(j);      
             }
             catch(std::out_of_range vector){
-                cout<<"               ";
+                cout<<"                  ";
             }
-            
         }
         cout<<endl;
     }
-    
+
+
     
 }

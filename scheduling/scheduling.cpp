@@ -54,15 +54,19 @@ Scheduling :: Scheduling(int n, int sa, int q){
     int copy = 1;
     while (copy <= n)
     {
-        cout<<"P"<<copy<<" State"<<"    ";
+        cout<<"P"<<copy<<" State"<<"          ";
         copy++;
     }
-    cout<<"Comment"<<endl; // close line 
+    // cout<<"Comment"<<endl; // close line 
+    cout<<endl;
 
     while(!terminate){
         cycle++;
 
         // each cycle
+
+        
+
 
         std::queue<int> next_in_line;  
 
@@ -84,57 +88,20 @@ Scheduling :: Scheduling(int n, int sa, int q){
                 }
                 
             }
-            // else{
-            //     terminate = 2;
-            //     break;
-            // }
         }
+
         
         for (int i = 1; i <= n; i++)
 
         {
-        // cout<<"cycle" << cycle <<endl;
 
 
-        // cout<<"wait in line: "<<current_run<<endl;
 
-        // cout<<"line: "<<current_run<<endl;
-
-        // cout<<"run to block"<<run_to_block[i]<<endl;
-
-
-            if (i == current_run)
-            {
-                if (total_run[i] % 3 == 0 && total_run[i] != 0 && total_block[i] == 0)
-                {
-                    run_to_block[i] = 0;
-                    if (wait_in_line.size() != 0)
-                    {
-                        if (wait_in_line.front().size() == 1)
-                        {
-                            current_run = wait_in_line.front().front();
-                            wait_in_line.pop();   
-                            run_to_block[current_run] = 1; 
-                        }
-                        else{
-                            wait_in_line.front() = sort_queue(wait_in_line.front());
-                            current_run = wait_in_line.front().front();
-                            run_to_block[current_run] = 1;
-                            wait_in_line.front().pop();
-                            }
-                        
-                    }
-                        else{
-                            current_run = 0;
-                            // terminate = 2;
-                            // break;
-                            }
-                }
-            }
             
             if (i == current_run)
             {   // current run 
                     total_run[i] ++;
+                    
 
                     if (total_run[i] == 7)
                     {
@@ -151,13 +118,22 @@ Scheduling :: Scheduling(int n, int sa, int q){
                         std::stringstream ss;
                         if (total_run[i]%3 == 0)
                         {
-                                ss << "Run(3,3) ";
-                        }
-                        else{
-                                ss << "Run(" << (total_run[i])%3 << ",3) ";
+                                ss << "Run(3/3) ";
+                                run_to_block[i] = 0;
 
+                                current_run = 0;
                         }
-                        output.at(i).push_back(ss.str());     
+
+                        else{
+                                ss << "Run(" << (total_run[i])%3 << "/3) ";
+                    
+                        }
+                 
+                        output.at(i).push_back(ss.str());
+                        // if (cycle == 7)
+                        // {
+                        // cout<<"output:"<<output.at(i).at(0)<<endl;;
+                        // }  
                     }
             }
 
@@ -169,19 +145,20 @@ Scheduling :: Scheduling(int n, int sa, int q){
                     if (total_block[i] % 2 == 0)
                     {
                         std::stringstream ss;
-                        ss << "Block(2,2)";
+                        ss << "Block(2/2)";
                         output.at(i).push_back(ss.str());  
                         run_to_block[i] = 2;
                         next_in_line.push(i);
+                        // cout<<"cycle:"<<cycle<<endl;
                     } 
                     else{
                         std::stringstream ss;
-                        ss << "Block(" << total_block[i]%2 << ",2) ";
+                        ss << "Block(" << total_block[i]%2 << "/2) ";
                         output.at(i).push_back(ss.str());  
                     }
                     
                 }
-                if (run_to_block[i] == 2)
+                else if (run_to_block[i] == 2)
                 {
                     std::stringstream ss;
                     ss << "Ready";
@@ -202,17 +179,12 @@ Scheduling :: Scheduling(int n, int sa, int q){
             {
                 if (!termination[j])
                 {
-                    // cout<<"terminate: "<<j<<endl;
                     terminate = 0;
                 }
                 
             }
         }
-        
-        
-        
     }
-   
     
     return output;
     
