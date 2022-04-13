@@ -1,4 +1,5 @@
-#include "scheduling.h"
+#include "FIFO.h"
+#include "RR.h"
 
 #include <iostream>
 # include <string> 
@@ -8,14 +9,26 @@
 
 using namespace std;
 
-int main(){
+void scheduling(int n, int sa, int q){
 
-    Scheduling s1 (1,1,2);
+    std::vector<std::vector<std::string> > result;
+    if(n == 1){
+        FIFO f(n,sa);
+        result = f.implementation();
+    }
+    else{
+        if (sa == 1)
+        {
+        FIFO f(n,sa);
+        result = f.implementation();
+        }
+        else if (sa == 2)
+        {
+        RR r(n, sa, q);
+        result = r.rrimplement();
+        }
+    }
 
-    std::vector<std::vector<std::string> > result = s1.FIFO();
-
-    // cout<<"result size: "<<result.size()<<endl;
-    // cout<<"result sub size: "<<result.at(1).size()<<endl;
 
 
     int max = 0;
@@ -44,6 +57,12 @@ int main(){
         cout<<endl;
     }
 
+};
 
+int main(){
     
+    scheduling(1,2,1); // change n, sa, q here 
+
+    return 0;
+
 }
