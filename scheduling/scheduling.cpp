@@ -23,6 +23,24 @@ FIFO :: FIFO(int n, int sa){
     this->sa = sa;
 }
 
+
+std::queue<int> FIFO ::sort_queue(std::queue<int> &q)   
+{
+  std::vector<int> temp;
+   while(!q.empty())
+   {
+       temp.push_back(q.front());
+       q.pop();
+   }
+   sort(temp.begin(),temp.end());
+   for(int i=0;i<temp.size();i++)
+   {
+       q.push(temp.back());
+   }
+   return q;
+};
+
+
  std::vector<std::vector<string> > FIFO :: implementation(){
     int cycle = 0;
 
@@ -59,16 +77,13 @@ FIFO :: FIFO(int n, int sa){
         cout<<"P"<<copy<<" State"<<"          ";
         copy++;
     }
-    // cout<<"Comment"<<endl; // close line 
+    
     cout<<endl;
 
     while(!terminate){
         cycle++;
 
         // each cycle
-
-        
-
 
         std::queue<int> next_in_line;  
 
@@ -96,10 +111,6 @@ FIFO :: FIFO(int n, int sa){
         for (int i = 1; i <= n; i++)
 
         {
-
-
-
-            
             if (i == current_run)
             {   // current run 
                     total_run[i] ++;
@@ -107,7 +118,6 @@ FIFO :: FIFO(int n, int sa){
 
                     if (total_run[i] == 7)
                     {
-                        // cout<<"terminate!!!!"<<endl;
                         std::stringstream ss;
                         ss << "Terminate";
                         output.at(i).push_back(ss.str());     
@@ -132,10 +142,7 @@ FIFO :: FIFO(int n, int sa){
                         }
                  
                         output.at(i).push_back(ss.str());
-                        // if (cycle == 7)
-                        // {
-                        // cout<<"output:"<<output.at(i).at(0)<<endl;;
-                        // }  
+            
                     }
             }
 
@@ -151,7 +158,7 @@ FIFO :: FIFO(int n, int sa){
                         output.at(i).push_back(ss.str());  
                         run_to_block[i] = 2;
                         next_in_line.push(i);
-                        // cout<<"cycle:"<<cycle<<endl;
+                        
                     } 
                     else{
                         std::stringstream ss;
@@ -195,6 +202,7 @@ FIFO :: FIFO(int n, int sa){
 
 
 
+// for RR scheduling 
 
 
 RR::RR(int n, int sa, int q)
@@ -222,14 +230,13 @@ std::queue<int> RR ::rr_sort_queue(std::queue<int> &q)
 
 
 
-// for RR scheduling 
-
 
 std::vector<std::vector<std::string> > RR:: rrimplement(){
     int cycle = 0;
     int run_switch = 0;
 
     std::queue<std::queue<int> > wait_in_line;
+
     int run_to_block[n];
     int total_run[n];
     int total_block[n];
@@ -262,7 +269,7 @@ std::vector<std::vector<std::string> > RR:: rrimplement(){
         cout<<"P"<<copy<<" State"<<"          ";
         copy++;
     }
-    // cout<<"Comment"<<endl; // close line 
+
     cout<<endl;
 
     while(!terminate){
@@ -270,20 +277,24 @@ std::vector<std::vector<std::string> > RR:: rrimplement(){
     
         std::queue<int> next_in_line;  
 
-        if (run_switch == q)
+        if (run_switch >= q )
         {
-            run_switch = 0;
             if (current_run!=0)
             {
+                run_switch = 0;
                 next_in_line.push(current_run);
+                run_to_block[current_run] = 2;
+                current_run = 0;
             }
-            
-            run_to_block[current_run] = 2;
-            current_run = 0;
+            else{
+                run_switch = 0;
+                
+            }
         }
 
         if (current_run == 0)
         {
+            
             if (wait_in_line.size() != 0)
             {
                 if (wait_in_line.front().size() == 1)
@@ -300,11 +311,7 @@ std::vector<std::vector<std::string> > RR:: rrimplement(){
                 }
                 
             }
-            // else{
-            //     // cpu idle 
-            //     run_switch = 0;
 
-            // }
         }
 
         
@@ -333,9 +340,9 @@ std::vector<std::vector<std::string> > RR:: rrimplement(){
                         if (total_run[i]%3 == 0)
                         {
                                 ss << "Run(3/3) ";
-                                run_switch++;
                                 run_to_block[i] = 0;
                                 current_run = 0;
+                                run_switch = 0;
                         }
 
                         else{
@@ -344,10 +351,7 @@ std::vector<std::vector<std::string> > RR:: rrimplement(){
                         }
                  
                         output.at(i).push_back(ss.str());
-                        // if (cycle == 7)
-                        // {
-                        // cout<<"output:"<<output.at(i).at(0)<<endl;;
-                        // }  
+
                     }
             }
 
@@ -398,26 +402,10 @@ std::vector<std::vector<std::string> > RR:: rrimplement(){
                 
             }
         }
+    
     }
     
     return output;
-};
-
-
-std::queue<int> FIFO ::sort_queue(std::queue<int> &q)   
-{
-  std::vector<int> temp;
-   while(!q.empty())
-   {
-       temp.push_back(q.front());
-       q.pop();
-   }
-   sort(temp.begin(),temp.end());
-   for(int i=0;i<temp.size();i++)
-   {
-       q.push(temp.back());
-   }
-   return q;
 };
 
 

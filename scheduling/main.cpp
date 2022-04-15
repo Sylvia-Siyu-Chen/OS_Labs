@@ -61,7 +61,7 @@ void scheduling(int n, int sa, int q){
 
 int main(){
     
-    scheduling(1,2,1); // change n, sa, q here 
+    scheduling(2,2,2); // change n, sa, q here 
 
     return 0;
 
